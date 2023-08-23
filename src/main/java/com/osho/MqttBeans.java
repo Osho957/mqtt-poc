@@ -1,7 +1,8 @@
-package com.aiotico;
+package com.osho;
 
 
 
+import com.osho.kafka.KafkaProducerService;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,18 +23,21 @@ import org.springframework.messaging.MessagingException;
 
 @Configuration
 public class MqttBeans {
-	
+
+	private final KafkaProducerService producerService;
+
+	public MqttBeans(KafkaProducerService producerService) {
+		this.producerService = producerService;
+	}
 	@Bean
 	public MqttPahoClientFactory mqttClientFactory() {
 		DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
 		MqttConnectOptions options = new MqttConnectOptions();
 
 		options.setServerURIs(new String[] { "tcp://localhost:1883" });
-		options.setUserName("admin");
-		String pass = "12345678";
-		options.setPassword(pass.toCharArray());
+		options.setAutomaticReconnect(true);
 		options.setCleanSession(true);
-
+		options.setConnectionTimeout(10);
 		factory.setConnectionOptions(options);
 
 		return factory;
@@ -64,10 +68,11 @@ public class MqttBeans {
 			@Override
 			public void handleMessage(Message<?> message) throws MessagingException {
 				String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
-				if(topic.equals("myTopic")) {
+				if(topic.equals("test1")) {
 					System.out.println("This is the topic");
 				}
-				System.out.println(message.getPayload());
+				System.out.println(topic +" - "+ message.getPayload());
+				producerService.sendMessage(message.getPayload().toString());
 			}
 
 		};
@@ -78,6 +83,7 @@ public class MqttBeans {
     public MessageChannel mqttOutboundChannel() {
         return new DirectChannel();
     }
+
 	@Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {

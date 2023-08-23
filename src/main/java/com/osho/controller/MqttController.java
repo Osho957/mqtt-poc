@@ -1,4 +1,4 @@
-package com.aiotico.controller;
+package com.osho.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aiotico.MqttGateway;
+import com.osho.MqttGateway;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 

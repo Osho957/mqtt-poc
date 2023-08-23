@@ -1,13 +1,13 @@
-package com.aiotico;
+package com.osho;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ItoDemoApplication {
+public class MqttDemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ItoDemoApplication.class, args);
+		SpringApplication.run(MqttDemoApplication.class, args);
 	}
 
 }

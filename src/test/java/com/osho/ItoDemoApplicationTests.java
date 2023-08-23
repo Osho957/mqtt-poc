@@ -1,4 +1,4 @@
-package com.aiotico;
+package com.osho;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
